@@ -1,0 +1,24 @@
+application: python-blog-rb
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+
+- url: /([0-9]+)
+  script: post.app  
+
+- url: /new_post
+  script: new_post.app
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.1"
