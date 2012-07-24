@@ -9,7 +9,9 @@
 # AUTHOR: Robert Barry
 # DATE CREATED: July 24, 2012
 # DATE CHANGED: July 24, 2012
-# WEB ADDRESS: http://python-blog-rb.appspot.com/import webapp2
+# WEB ADDRESS: http://python-blog-rb.appspot.com/
+
+import webapp2
 
 from google.appengine.ext import db
 
