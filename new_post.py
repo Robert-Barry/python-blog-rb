@@ -12,6 +12,8 @@
 # WEB ADDRESS: http://python-blog-rb.appspot.com/
 
 import webapp2
+from users import *
+from hashing import *
 
 from google.appengine.ext import db
 
@@ -74,7 +76,7 @@ new_post = """
 	<form method="post">
 	    <label>
 		<div>post title</div>
-	    	    <input type="text" name="title" />
+	    	    <input type="text" name="subject" />
 	    </label>
 
 	    <div>blog post</div>
@@ -96,12 +98,27 @@ class Blog(db.Model):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-	# display the HTML
-        self.response.out.write(new_post)
+	# Get the cookie data for use in the welcome page
+	user_id = self.request.cookies.get('user-id')
+	
+	if user_id != '':
+	    id_split = user_id.split("|")
+	    # Get the user from the database by using the user name from the cookie
+	    key = db.Key.from_path('Users', int(id_split[0]))
+	    user = db.get(key)
+	
+	    # Verify that the retreived user id is the same as the hashed
+	    # user id are one and the same. If so, welcome the user, else
+	    # return to the signup page.
+	    if valid_3hash(str(id_split[0]), user_id):
+	        # display the HTML
+                self.response.out.write(new_post)
+	else:
+	    self.redirect("/signup")
 
     def post(self):
 	# Get the variables
-	title = self.request.get("title")
+	title = self.request.get("subject")
 	content = self.request.get("content")
 	
 	# test that the submission contains content
@@ -119,5 +136,5 @@ class MainHandler(webapp2.RequestHandler):
 
 	
 
-app = webapp2.WSGIApplication([('/new_post', MainHandler)],
+app = webapp2.WSGIApplication([('/newpost', MainHandler)],
                               debug=True)
