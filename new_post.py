@@ -14,6 +14,7 @@
 import webapp2
 from users import *
 from hashing import *
+from cache import *
 
 from google.appengine.ext import db
 
@@ -127,6 +128,7 @@ class MainHandler(webapp2.RequestHandler):
 	    entry = Blog(title = title, content = content)
 	    # store the post in the datastore
 	    entry.put()
+	    top_posts(True)
 	    # find the entry's id and redirect to a page
 	    # with the id as the path
 	    x = str(entry.key().id())

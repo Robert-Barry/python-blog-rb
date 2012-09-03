@@ -9,14 +9,25 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /login
+  script: login.app  
+    
+- url: /logout
+  script: logout.app
 
-- url: /([0-9]+)
+- url: /signup
+  script: signup.app
+
+- url: /([0-9]+)(?:\.json)?
   script: post.app  
 
-- url: /new_post
+- url: /newpost
   script: new_post.app
+  
+- url: /welcome
+  script: welcome.app
 
-- url: .*
+- url: .*/(?:\.json)?
   script: main.app
 
 libraries:
